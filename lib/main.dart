@@ -4,6 +4,8 @@ void main() {
   runApp(const MyApp());
 }
 
+
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -28,6 +30,16 @@ class _CounterWidgetState extends State<CounterWidget> {
   // set counter value
   int _counter = 0;
 
+  Color _getStatusColor() {
+    if (_counter == 0) {
+      return Colors.red;
+    } else if (_counter > 0 && _counter <= 50) {
+      return const Color.fromARGB(255, 255, 193, 59);
+    } else {
+      return Colors.green;
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,10 +51,15 @@ class _CounterWidgetState extends State<CounterWidget> {
         children: [
           Center(
             child: Container(
-              color: Colors.blue,
-              child: Text(
-                '$_counter',
-                style: const TextStyle(fontSize: 50.0),
+              color: _getStatusColor(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    _counter == 100 ? 'LIFTOFF!' : '$_counter',
+                    style: const TextStyle(fontSize: 20.0, color: Colors.white),
+                  ),
+                ],
               ),
             ),
           ),
@@ -57,6 +74,34 @@ class _CounterWidgetState extends State<CounterWidget> {
             },
             activeColor: Colors.blue,
             inactiveColor: Colors.red,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                if (_counter < 100) {
+                  _counter ++;
+                }
+              });
+            },
+            child: const Text('Ignite'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                if (_counter > 0) {
+                  _counter --;
+                }
+              });
+            },
+            child: const Text('Decrement'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                _counter = 0;
+              });
+            },
+            child: const Text('Reset'),
           ),
         ],
       ),
